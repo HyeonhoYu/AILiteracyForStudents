@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Literacy for Students</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#16283C;
+    --ink-soft:#42566B;
+    --paper:#F3F5F1;
+    --card:#FFFFFF;
+    --rule:#D9DED6;
+    --amber:#D99A21;
+    --sage:#4F7A63;
+    --pen:#B34434;
+    --track:#C97A2B;
+    --serif:'Newsreader','Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+    --sans:'Archivo','Avenir Next','Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18px;line-height:1.65}
+  a{color:inherit}
+  button{font-family:var(--sans);cursor:pointer}
+  :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+  .topbar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule)}
+  .topbar-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px}
+  .wordmark{font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:-.01em;
+    text-decoration:none;line-height:1.2}
+  .wordmark span{display:block;font-weight:400;color:var(--ink-soft);font-size:12.5px}
+  .meter{margin-left:auto;display:flex;align-items:center;gap:10px;
+    font-family:var(--sans);font-size:12.5px;color:var(--ink-soft)}
+  .meter-track{width:84px;height:6px;background:var(--rule);border-radius:3px;overflow:hidden}
+  .meter-fill{height:100%;width:0;background:var(--track);transition:width .45s ease}
+
+  .shell{max-width:1120px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:1fr;gap:0}
+  @media(min-width:980px){
+    .shell{grid-template-columns:236px 1fr;gap:56px;padding-top:8px}
+    .shell .rail{display:block}
+  }
+  .rail{display:none;position:sticky;top:74px;align-self:start;padding:30px 0;
+    font-family:var(--sans);font-size:13.5px}
+  .rail h2{font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink-soft);margin:0 0 12px}
+  .rail ol,.rail ul{list-style:none;margin:0 0 26px;padding:0}
+  .rail ol{border-left:1px solid var(--rule)}
+  .rail li{position:relative}
+  .rail a{display:block;padding:7px 0 7px 16px;text-decoration:none;color:var(--ink-soft);
+    border-left:2px solid transparent;margin-left:-1px;line-height:1.35}
+  .rail a:hover{color:var(--ink)}
+  .rail a.on{color:var(--ink);font-weight:600;border-left-color:var(--track)}
+  .rail ol a.done::after{content:"";position:absolute;left:-4px;top:15px;width:7px;height:7px;
+    border-radius:50%;background:var(--sage)}
+
+  main{padding:30px 0 0;min-width:0}
+  .col{max-width:660px}
+
+  .hero{padding:22px 0 40px;border-bottom:1px solid var(--rule)}
+  .hero h1{font-weight:500;font-size:clamp(34px,5.6vw,54px);line-height:1.07;
+    letter-spacing:-.02em;margin:0 0 18px;max-width:15ch}
+  .hero p{margin:0 0 30px;max-width:56ch;color:var(--ink-soft);font-size:19px}
+  .facts{border-top:1px solid var(--rule);max-width:520px;margin-bottom:32px}
+  .facts div{display:flex;gap:20px;padding:9px 0;border-bottom:1px solid var(--rule);
+    font-family:var(--sans);font-size:13.5px}
+  .facts dt{width:118px;flex:none;color:var(--ink-soft);margin:0}
+  .facts dd{margin:0}
+
+  .btn{display:inline-block;background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+    border-radius:2px;padding:12px 22px;font-size:14.5px;font-weight:500;text-decoration:none;
+    font-family:var(--sans)}
+  .btn:hover{background:#0E1D2E}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:rgba(22,40,60,.06)}
+
+
+  .syllabus{margin:38px 0 0}
+  .plain-h2{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink-soft);margin:0 0 4px}
+  .entry{display:grid;grid-template-columns:34px 1fr auto;align-items:baseline;gap:14px;
+    padding:20px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+  .entry:hover .entry-t{text-decoration:underline;text-underline-offset:3px}
+  .entry-n{font-family:var(--sans);font-size:13px;color:var(--ink-soft);padding-top:3px}
+  .entry-t{font-size:22px;font-weight:500;line-height:1.25;letter-spacing:-.01em;display:block}
+  .entry-d{display:block;color:var(--ink-soft);font-size:16px;line-height:1.5;margin-top:3px}
+  .entry-s{font-family:var(--sans);font-size:12px;color:var(--ink-soft);white-space:nowrap;padding-top:6px}
+  .entry-s.ok{color:var(--sage);font-weight:600}
+
+  .crumb{font-family:var(--sans);font-size:13px;color:var(--ink-soft);text-decoration:none;
+    display:inline-block;margin-bottom:26px}
+  .crumb:hover{color:var(--ink)}
+  .mod-head{border-bottom:1px solid var(--rule);padding-bottom:26px;margin-bottom:34px}
+  .mod-kicker{font-family:var(--sans);font-size:13px;color:var(--ink-soft);margin:0 0 8px}
+  .mod-head h1{font-weight:500;font-size:clamp(28px,4.4vw,40px);line-height:1.14;
+    letter-spacing:-.02em;margin:0 0 14px}
+  .mod-head p{margin:0;color:var(--ink-soft);max-width:56ch}
+
+  .col h3{font-weight:600;font-size:21px;line-height:1.3;margin:38px 0 10px;letter-spacing:-.01em}
+  .col p{margin:0 0 16px;max-width:64ch}
+  .col ul{margin:0 0 18px;padding-left:20px;max-width:62ch}
+  .col li{margin-bottom:8px}
+  .lead-in{color:var(--ink-soft)}
+
+  .terms{margin:22px 0 26px;border-top:2px solid var(--ink)}
+  .terms div{display:grid;grid-template-columns:1fr;gap:2px;padding:12px 0;border-bottom:1px solid var(--rule)}
+  @media(min-width:620px){.terms div{grid-template-columns:180px 1fr;gap:20px}}
+  .terms dt{font-family:var(--sans);font-weight:600;font-size:14px;margin:0;padding-top:2px}
+  .terms dd{margin:0;font-size:17px;line-height:1.55;color:var(--ink-soft)}
+
+  .fig{margin:30px 0 34px;max-width:520px}
+  .fig svg{display:block;width:100%;height:auto}
+  .fig figcaption{font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--ink-soft);
+    margin-top:11px;padding-top:10px;border-top:1px solid var(--rule);max-width:56ch}
+  .fig text{font-family:var(--sans);fill:var(--ink)}
+  .fig .t-lab{font-size:15px;font-weight:600}
+  .fig .t-sub{font-size:13px;fill:var(--ink-soft)}
+  .fig .t-tiny{font-size:11.5px;fill:var(--ink-soft)}
+  .fig .bx{fill:var(--card);stroke:var(--rule)}
+  @media(max-width:700px){
+    .fig .t-lab{font-size:17px}
+    .fig .t-sub{font-size:14.5px}
+    .fig .t-tiny{font-size:13px}
+  }
+  @media print{.fig{break-inside:avoid}}
+
+  .box{border-left:3px solid;padding:4px 0 4px 20px;margin:26px 0 30px;max-width:62ch}
+  .box.try{border-color:var(--sage)}
+  .box.warn{border-color:var(--pen)}
+  .box h4{font-family:var(--sans);font-size:12.5px;font-weight:600;margin:0 0 6px}
+  .box.try h4{color:var(--sage)}
+  .box.warn h4{color:var(--pen)}
+  .box p{margin:0 0 10px;font-size:17px}
+  .box p:last-child{margin-bottom:0}
+
+  .quiz{margin:50px 0 0;border-top:2px solid var(--ink);padding-top:26px}
+  .quiz > h3{margin-top:0}
+  .q{margin:0 0 30px}
+  .q p.stem{font-weight:500;margin:0 0 12px}
+  .opt{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);
+    border-radius:2px;color:var(--ink);padding:11px 14px;margin-bottom:8px;font-size:15.5px;
+    line-height:1.45;transition:border-color .15s,background .15s}
+  .opt:hover:not(:disabled){border-color:var(--ink)}
+  .opt:disabled{cursor:default}
+  .opt.right{border-color:var(--sage);background:rgba(79,122,99,.09);font-weight:500}
+  .opt.wrong{border-color:var(--pen);background:rgba(179,68,52,.07)}
+  .why{font-size:16px;color:var(--ink-soft);margin:10px 0 0;padding-left:14px;border-left:2px solid var(--rule)}
+  .result{border-top:1px solid var(--rule);padding-top:22px;margin-top:6px}
+  .result p{margin:0 0 16px}
+  .result .score{font-family:var(--sans);font-size:13px;color:var(--ink-soft)}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+  .gloss{border-top:2px solid var(--ink);margin-top:26px}
+  .gloss > div{padding:16px 0;border-bottom:1px solid var(--rule)}
+  .gloss dt{font-family:var(--sans);font-weight:600;font-size:15px;margin:0 0 4px}
+  .gloss dd{margin:0;color:var(--ink-soft);max-width:64ch}
+  .gloss .src{font-family:var(--sans);font-size:12px;color:var(--ink-soft);opacity:.8}
+
+  .cert-form{margin:26px 0 34px;max-width:420px}
+  label.fl{display:block;font-family:var(--sans);font-size:13px;color:var(--ink-soft);margin-bottom:6px}
+  input[type=text]{width:100%;padding:11px 13px;font-family:var(--serif);font-size:17px;color:var(--ink);
+    background:var(--card);border:1px solid var(--rule);border-radius:2px}
+  input[type=text]:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:var(--ink)}
+  .cert{background:var(--card);border:1px solid var(--rule);padding:52px 46px;margin:8px 0 26px;
+    text-align:center;position:relative}
+  .cert::before{content:"";position:absolute;inset:12px;border:1px solid var(--rule);pointer-events:none}
+  .cert .cert-k{font-family:var(--sans);font-size:12px;color:var(--ink-soft);margin:0 0 24px}
+  .cert .who{font-size:clamp(26px,5vw,38px);font-weight:500;letter-spacing:-.01em;line-height:1.2;
+    margin:0 0 8px;border-bottom:1px solid var(--rule);padding-bottom:16px;display:inline-block;min-width:60%}
+  .cert .what{color:var(--ink-soft);max-width:46ch;margin:20px auto 24px;font-size:17px}
+  .cert .stamp{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft)}
+  .cert ol{list-style:none;padding:0;margin:24px auto 0;max-width:440px;text-align:left;
+    font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);columns:2;column-gap:24px}
+  .cert ol li{margin-bottom:5px;break-inside:avoid}
+
+  .locked{border-left:3px solid var(--track);padding-left:20px;margin:26px 0;max-width:60ch}
+  .locked h4{font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--track);margin:0 0 6px}
+
+  footer{max-width:1120px;margin:0 auto;padding:26px 24px 60px;border-top:1px solid var(--rule);
+    font-family:var(--sans);font-size:12.5px;color:var(--ink-soft)}
+  footer .row{justify-content:space-between}
+  .linkish{background:none;border:0;padding:0;color:var(--ink-soft);font-size:12.5px;
+    text-decoration:underline;text-underline-offset:2px}
+  .linkish:hover{color:var(--pen)}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);
+    color:var(--paper);font-family:var(--sans);font-size:13px;padding:10px 18px;border-radius:2px;
+    z-index:50;opacity:0;pointer-events:none;transition:opacity .25s}
+  .toast.show{opacity:1}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media print{
+    .topbar,.rail,footer,.cert-form,.noprint{display:none!important}
+    body{background:#fff}
+    .shell{display:block;padding:0}
+    .cert{border-color:#999;padding:70px 50px}
+  }
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="wordmark" href="#/">AI Literacy for Students<span>A short course on using AI in university study</span></a>
+    <div class="meter" id="meter">
+      <span id="meterText"></span>
+      <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+    </div>
+  </div>
+</header>
+
+<div class="shell" id="shell">
+  <nav class="rail" aria-label="Course contents">
+    <h2>Modules</h2>
+    <ol id="railList"></ol>
+    <h2>Reference</h2>
+    <ul id="railExtras"></ul>
+  </nav>
+  <main id="view"></main>
+</div>
+
+<footer>
+  <div class="row">
+    <span>General guidance for university study. Your course syllabus and your institution's academic integrity and data policies govern where they differ.</span>
+    <button class="linkish" id="resetBtn">Reset my progress</button>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================================================================
+   COURSE CONTENT: two tracks
+=================================================================== */
+
+const STUDENT = [
+{
+  id:"m1", mins:"7 min",
+  title:"What AI actually is",
+  blurb:"The words behind the buzzwords, and one sentence that will keep you out of trouble.",
+  body:[
+    {t:"p",v:"You have used AI for years without calling it that. The feed that decides what you see next, the autocomplete in your messages, the fraud alert on your card. What changed recently is that one kind of AI started producing paragraphs, and paragraphs are what university runs on."},
+    {t:"h",v:"One sentence that holds up"},
+    {t:"p",v:"An AI system finds patterns in very large amounts of data and uses those patterns to predict what comes next. That is the whole idea. Notice what is not in that sentence: understanding, knowing, believing, meaning. A model can write a paragraph about Kant without anything in it resembling thought about Kant."},
+    {t:"p",v:"Hold on to this. Almost every mistake students make with these tools comes from quietly assuming there is someone home."},
+    {t:"h",v:"The four words, from widest to narrowest"},
+    {t:"terms",v:[
+      ["Artificial intelligence","The umbrella term for computer systems doing work we used to think required a person. Your spam filter counts."],
+      ["Machine learning","Building AI by showing a system examples instead of writing rules for it. Nobody coded what a cat looks like; the system saw many cats."],
+      ["Deep learning","Machine learning using neural networks with many layers. This is behind nearly every AI tool you have heard of."],
+      ["Generative AI","Systems that produce new content, whether text, images, audio, or code, rather than only sorting or scoring what already exists."],
+      ["Large language model","A generative system trained on enormous quantities of text to predict language. ChatGPT, Claude, Gemini, and Copilot are products built on top of one."]
+    ]},
+    {t:"fig",f:"nesting",cap:"The five words are not five categories side by side. Each one sits inside the one before it, which is why a claim about AI in general tells you almost nothing about the chatbot in front of you."},
+    {t:"h",v:"Why the distinction is worth two minutes of your life"},
+    {t:"p",v:"When your professor bans AI, when a job application says AI screened, and when a news story says AI predicted, those are three different technologies with three different failure modes. If they are all just AI to you, you cannot ask a sensible question about any of them, including the one that decides whether your resume gets read."},
+    {t:"box",k:"try",h:"A question worth carrying around",v:["Where did the pattern come from? Ask it about a recommendation feed, a plagiarism score, a loan decision, and a chatbot answer.","If nobody can tell you what data the pattern was learned from, that is itself the answer to how much you should trust it."]}
+  ],
+  quiz:[
+    {q:"Your roommate says the chatbot really understood their essay prompt. The accurate correction is:",
+     a:["It predicted likely continuations of the words based on patterns in training text","It searched the web and found a model answer","It understood the content but not the emotion","It reasoned through the prompt the way a person would"],
+     c:0, why:"Prediction from patterns is the mechanism. The output can be genuinely useful and still involve nothing like understanding."},
+    {q:"Which is the narrowest category?",
+     a:["Artificial intelligence","Deep learning","Large language model","Machine learning"],
+     c:2, why:"The nesting runs from artificial intelligence down through machine learning, deep learning, generative AI, and finally large language models."},
+    {q:"Why does it matter that a resume screener and a chatbot are different kinds of AI?",
+     a:["One is more expensive to run","They fail in different ways, and one is making a decision about you","Only one uses machine learning","Chatbots are regulated and screeners are not"],
+     c:1, why:"A system that scores you is making a consequential claim about a person, which deserves a different kind of scrutiny than a drafting tool."}
+  ]
+},
+{
+  id:"m2", mins:"8 min",
+  title:"How a chatbot produces an answer",
+  blurb:"Tokens, context windows, cutoffs, and why the answer changes when you ask twice.",
+  body:[
+    {t:"p",v:"No mathematics here. You need a working mental picture, because it explains every weird thing the tool will do to you at two in the morning before a deadline."},
+    {t:"h",v:"It is guessing the next fragment, over and over"},
+    {t:"p",v:"The model splits text into tokens, roughly word fragments. Given everything so far, it estimates which token likely comes next, picks one, adds it, and repeats. A three paragraph answer was built a fragment at a time. There was no outline, no plan, and no draft held in mind."},
+    {t:"p",v:"This is why an answer can start out confident and finish with something invented. Nothing was ever being looked up. A pattern was being continued."},
+    {t:"h",v:"Vocabulary you will actually use"},
+    {t:"terms",v:[
+      ["Token","A chunk of text, usually part of a word. Length limits, cost, and speed are all measured in tokens rather than words."],
+      ["Training data","The text the model learned from. Enormous, largely scraped from the internet, and carrying whatever was in it, including errors, bias, and a lot of Reddit."],
+      ["Parameters","The billions of adjustable values inside the model that encode learned patterns. Bigger is not automatically more accurate."],
+      ["Context window","How much text the model can hold in view at once, including your prompt and its own reply. When a long chat overflows it, the earliest material stops mattering."],
+      ["Knowledge cutoff","The date after which the model saw no training text. Anything later is either unknown or fetched by a search tool attached afterward."],
+      ["Temperature","A setting controlling randomness in token choice. Higher gives more varied text, lower gives more predictable text."]
+    ]},
+    {t:"fig",f:"tokens",cap:"One step of generation. The model estimates how likely each possible next fragment is, samples one, appends it, and starts over. Repeat a few hundred times and you have an essay that was never planned."},
+    {t:"h",v:"Two things this explains immediately"},
+    {t:"p",v:"Ask the same question twice and you get two different answers, because randomness is deliberately built into the token choice. Neither version is the official one. If you are comparing notes with a classmate and your answers differ, that is expected, not evidence that one of you did something wrong."},
+    {t:"p",v:"And long conversations drift. If you spent thirty messages building up your argument and the replies start ignoring your rules, you have probably pushed the early instructions out of the context window. Starting fresh and restating what matters fixes more than arguing does."},
+    {t:"fig",f:"context",cap:"Why long conversations forget. Only what fits inside the frame influences the next answer. Your careful setup from thirty messages ago may simply no longer be there."},
+    {t:"box",k:"try",h:"Two minutes, once",v:["Open two separate chats. Paste an identical question into each. Read both answers side by side.","This is the cheapest possible cure for treating a chatbot output as the answer to anything."]}
+  ],
+  quiz:[
+    {q:"You ask the same question twice and get different answers. What happened?",
+     a:["The model learned from your first question","Token choice involves deliberate randomness, so outputs vary","One answer is a malfunction","Different servers hold different information"],
+     c:1, why:"Variation is built in. Neither answer is more authoritative, and consumer chat tools do not learn from your conversation on the spot."},
+    {q:"Deep into a long chat, the model starts ignoring formatting rules you set at the start. Most likely cause:",
+     a:["The context window filled and early instructions stopped influencing output","The model is refusing your instructions","You hit a usage limit","The knowledge cutoff was reached"],
+     c:0, why:"Context windows are finite. A fresh chat with the essentials restated usually beats repeating yourself in the old one."},
+    {q:"A model with a cutoff last year is asked about something from last month, with no search tool attached. Expect:",
+     a:["A refusal","An accurate answer from live data","A confident answer that may be entirely invented","An error message"],
+     c:2, why:"The pattern of a confident answer continues whether or not the information exists in the model. Fluency is not evidence."}
+  ]
+},
+{
+  id:"m3", mins:"9 min",
+  title:"When AI gets it wrong",
+  blurb:"Hallucination, bias, sycophancy, and the checking habit that saves your grade.",
+  body:[
+    {t:"p",v:"AI failures are not random. They come in named types, and each type has a matching habit that catches it. Learning the types beats vague suspicion, because vague suspicion collapses the moment you are tired and the answer looks good."},
+    {t:"h",v:"The failure modes"},
+    {t:"terms",v:[
+      ["Hallucination","Output that is fluent, confident, and false. The classic student version is a citation with a real author, a real journal, a plausible title, and no existence."],
+      ["Bias","Unfairness carried in from the training text and reproduced in output. It shows up in whose dialect gets marked as an error and whose history gets one sentence."],
+      ["Sycophancy","The tendency to agree with you. Push back on a correct answer and many models fold and apologize. Agreement is not confirmation."],
+      ["Prompt injection","Hidden instructions inside content the model reads, such as a webpage you asked it to summarize, that hijack what it does next."],
+      ["Overconfidence","The same certain tone whether it is right or inventing. There is no tell in the writing."]
+    ]},
+    {t:"box",k:"warn",h:"The specific way this ends a semester badly",v:["You ask for sources, you get five, two do not exist, and you cite them. Fabricating a citation is academic misconduct at most institutions whether or not you knew, because you asserted you consulted a source you never saw.","Every citation, statistic, date, and quotation gets checked in the library database before it goes in the document. Not most of them."]},
+    {t:"h",v:"Why fluency fools smart people"},
+    {t:"p",v:"You use fluency as a proxy for competence, and with humans it mostly works. Someone who writes a confident, organized paragraph about the French Revolution has probably read about it. A language model produces that paragraph either way, because producing fluent text is the only thing it does. The signal you have relied on your entire life has been decoupled from what it used to indicate."},
+    {t:"fig",f:"confidence",cap:"The two lines have come apart. Accuracy moves; the tone of certainty does not. Since you can only see the flat line, it carries no information about the other one."},
+    {t:"h",v:"A rule short enough to remember at 2am"},
+    {t:"p",v:"Never submit a claim you could not verify yourself. If verifying would take longer than writing it, write it. If your professor would ask where that came from, have an answer that is not the chatbot."},
+    {t:"p",v:"This also tells you where AI is genuinely low risk: rewriting your own paragraph more clearly, generating twenty essay angles you will then judge, explaining a concept you will then check against the textbook, or turning your notes into a table. You keep the facts."},
+    {t:"box",k:"try",h:"Worth doing once, deliberately",v:["Ask for three peer reviewed sources on a topic you know well, then try to find each one in your library database.","Nobody who has done this once ever pastes a reference list again without checking."]}
+  ],
+  quiz:[
+    {q:"A citation has a real journal, a plausible title, and does not exist. This is:",
+     a:["A search error","Hallucination","Prompt injection","Bias"],
+     c:1, why:"Fluent, confident, false output is hallucination, and fabricated citations are the version that reaches disciplinary committees."},
+    {q:"You tell the model its correct answer is wrong. It apologizes and changes it. This tells you:",
+     a:["The first answer was wrong","The model verified its position","Nothing about accuracy, since agreement often reflects sycophancy","The model learned from you"],
+     c:2, why:"Many models fold under pushback. An apology is not evidence about the world."},
+    {q:"Which task carries the lowest hallucination risk?",
+     a:["Getting sources for a literature review","Summarizing what your professor said in last week's lecture","Rewriting your own paragraph more clearly","Getting statistics on your field's job market"],
+     c:2, why:"The content stays yours. No new claim about the world is being introduced."}
+  ]
+},
+{
+  id:"m4", mins:"9 min",
+  title:"Using AI without outsourcing your learning",
+  blurb:"The difference between a tool that teaches you and a tool that replaces the part where you learn.",
+  body:[
+    {t:"p",v:"This is the module nobody wants and everybody needs. Not because using AI is wrong, but because the ways it feels most helpful and the ways it actually helps are not the same ways."},
+    {t:"h",v:"The illusion of fluency"},
+    {t:"p",v:"Reading a clear explanation feels like learning. It is one of the most reliable findings in cognitive psychology that this feeling is unreliable. What produces durable learning is retrieval, difficulty, and error, none of which feel good in the moment. A chatbot is extremely good at making hard things feel easy, which means it is extremely good at removing exactly the friction that was doing the work."},
+    {t:"p",v:"The practical consequence: if the AI did the part you found hard, you did not learn that part, no matter how much sense the output made while you read it."},
+    {t:"h",v:"Uses that build you"},
+    {t:"list",v:[
+      "Ask it to quiz you rather than explain to you, then check your answers against the course materials",
+      "Write your own attempt first, then ask what is weak about it, then revise yourself",
+      "Ask it to explain the same concept three different ways when the textbook version is not landing",
+      "Ask it to argue against your thesis so you can find the hole before your reader does",
+      "Use it to unstick a specific bug, error, or step, then continue on your own"
+    ]},
+    {t:"h",v:"Uses that hollow you out"},
+    {t:"list",v:[
+      "Generating the draft and editing it, which teaches editing and skips composing",
+      "Getting the answer to a problem set instead of the method",
+      "Summarizing a reading you were assigned in order to learn to read it",
+      "Producing code you cannot explain line by line, which will be discovered in a technical interview or a lab section",
+      "Anything where the difficulty was the point"
+    ]},
+    {t:"box",k:"try",h:"The single best change to how you prompt",v:["Add this to the end: do not give me the answer, ask me questions until I get there myself.","Most models comply, and the difference in what you retain a week later is not subtle."]},
+    {t:"h",v:"A test you can apply in ten seconds"},
+    {t:"p",v:"Could you reproduce this on a closed book exam, in a lab, or in a job interview next month? If yes, the tool helped. If no, you have borrowed against a debt that gets collected at the worst possible time, usually in a room with no wifi."},
+    {t:"box",k:"warn",h:"About your field specifically",v:["The tasks AI does well are the entry level tasks in many professions: the first draft, the boilerplate, the routine analysis. The people who will be fine are the ones who can judge that output, which requires having done the work yourself long enough to know what wrong looks like.","Graduating without that judgment, in a field where AI can already produce the artifact, is the actual risk. Not being caught."]}
+  ],
+  quiz:[
+    {q:"Why does a clear AI explanation often produce less learning than struggling through the textbook?",
+     a:["The explanations are usually wrong","Fluency feels like learning, but retrieval and difficulty are what make it durable","Textbooks are more accurate","Reading takes longer, so more is remembered"],
+     c:1, why:"Ease is a poor signal for learning. The friction the tool removes is frequently the friction that was doing the work."},
+    {q:"Which use most likely builds skill rather than replacing it?",
+     a:["Asking for a draft, then editing it","Writing your own attempt, then asking what is weak about it","Getting worked solutions to the problem set","Asking for a summary of the assigned reading"],
+     c:1, why:"You compose first, so the hard part stays yours, and the feedback lands on work you actually did."},
+    {q:"The ten second test for whether a use was helpful is:",
+     a:["Whether the professor allows it","Whether the output was accurate","Whether you could reproduce it without the tool next month","Whether it saved time"],
+     c:2, why:"Time saved now against capability owed later is the trade being made, and closed book settings are where the bill arrives."}
+  ]
+},
+{
+  id:"m5", mins:"9 min",
+  title:"Academic integrity and disclosure",
+  blurb:"What actually counts as misconduct, why detectors are a bad thing to rely on, and how to disclose.",
+  body:[
+    {t:"p",v:"Rules vary by course, and that is not a failure of your institution. A creative writing seminar and an introductory programming course are teaching different skills, so they draw the line in different places. Your job is to find the line for each course rather than assume one policy covers all of them."},
+    {t:"h",v:"What almost always counts as misconduct"},
+    {t:"list",v:[
+      "Submitting AI generated text or code as your own original work where that is not permitted",
+      "Citing a source you did not read, including one the model invented",
+      "Using AI in an assessment where it is prohibited, such as a take home exam",
+      "Having AI complete work attributed to a group where your teammates believe you wrote it",
+      "Fabricating data, results, or interview material"
+    ]},
+    {t:"p",v:"Intent is usually not the test. Submitting a fabricated citation is misconduct whether you knew it was fabricated or not, because you asserted that you consulted a source."},
+    {t:"h",v:"Do not build your plan around detectors"},
+    {t:"p",v:"AI text detectors report a probability, not a finding. They produce false positives on writing that is simple or formulaic, which means multilingual students get flagged at higher rates. Good institutions do not treat a score as proof."},
+    {t:"p",v:"That cuts two ways. It means a score alone should not convict you, and it also means the way an allegation gets resolved is a conversation about your work. Someone will ask you to explain your argument, name the source that changed your thinking, or walk through your code. That conversation is what you should be able to survive, and it does not depend on any detector."},
+    {t:"box",k:"try",h:"Insurance that costs nothing",v:["Keep your process. Version history in your document, dated notes, an outline, a photo of the whiteboard, your rough draft.","Students who can produce a revision trail resolve these situations in one meeting. Students who submit a finished file with no history spend a semester on it."]},
+    {t:"h",v:"How to ask, and how to disclose"},
+    {t:"p",v:"If a syllabus is silent, ask before the assignment rather than after. A specific question gets a usable answer: may I use AI to generate practice questions for myself, or to check grammar on sentences I wrote? Compare that to the unanswerable can we use AI."},
+    {t:"p",v:"When disclosure is required, be specific and put it at the end of the work. Name the tool, the version if you know it, what you used it for, and what you did with the output. One sentence is usually enough: I used Claude to generate counterarguments to my thesis in section two, and wrote all prose myself."},
+    {t:"box",k:"warn",h:"Group work",v:["Your teammates are being graded on work they believe you produced. Using AI without telling them is a decision you made on their behalf, and it is often treated as misconduct for the whole group.","Agree on the rules at the first meeting, not the night before submission."]}
+  ],
+  quiz:[
+    {q:"Your syllabus says nothing about AI. The right move is:",
+     a:["Assume it is allowed since it was not banned","Assume it is banned and avoid all use","Ask a specific question before you start the assignment","Use it and disclose afterward"],
+     c:2, why:"Silence is ambiguity, and ambiguity resolved after submission always resolves against you. A specific question gets a usable answer."},
+    {q:"Citing a source the model invented, without knowing it was invented, is:",
+     a:["Not misconduct, since there was no intent","Generally misconduct, because you asserted you consulted a source","A citation formatting error","Only an issue in graduate work"],
+     c:1, why:"The claim you made was that you read it. Intent is rarely the test for fabricated sources."},
+    {q:"The most useful protection if your work is questioned is:",
+     a:["A detector report showing a low score","Your drafts, notes, and version history","A screenshot of the chat you used","Your grade history in the course"],
+     c:1, why:"Process artifacts show how the work came to exist, which is what the conversation is actually about."}
+  ]
+},
+{
+  id:"m6", mins:"8 min",
+  title:"Your data, other people, and what comes next",
+  blurb:"What not to paste in, what AI use looks like in an internship, and the judgment worth keeping.",
+  body:[
+    {t:"p",v:"Two things last longer than this semester: what you put into these systems, and the habits you take into a workplace."},
+    {t:"h",v:"What not to paste in"},
+    {t:"terms",v:[
+      ["Your own sensitive information","Government ID numbers, financial details, medical history, immigration status, passwords. Assume anything typed in could be read by someone else."],
+      ["Other people's information","A classmate's draft, a friend's message, an interview transcript, anything about an identifiable person who did not agree to this."],
+      ["Confidential material from work","Internship documents, client information, source code, anything under a non disclosure agreement. This has ended internships."],
+      ["Unpublished research","Your own or your lab's, including a thesis in progress, if you or a supervisor intend to publish or patent it."],
+      ["Copyrighted material you were given access to","A licensed article, a proprietary data set, or course material a publisher licensed to your institution."]
+    ]},
+    {t:"p",v:"Free consumer tiers commonly use what you type to improve the systems. Paid, institutional, and enterprise tiers frequently do not, but that is a setting and a contract term rather than a law of nature. Check, and check again after the next policy update."},
+    {t:"fig",f:"dataflow",cap:"Where the text goes after you press enter. The difference between the two paths is a contract and a settings toggle, both of which can change, which is why the safe assumption is the top path."},
+    {t:"h",v:"Access is not equal, and pretending otherwise is expensive"},
+    {t:"p",v:"Some classmates have paid subscriptions, some have the free tier, some have a shared laptop. A course that quietly assumes AI access grades household income. If your institution provides an approved tool, use it. If an assignment requires a tool you cannot afford, that is a reasonable thing to raise with the instructor or the student union, and you will not be the only one."},
+    {t:"h",v:"What employers are actually watching"},
+    {t:"p",v:"The common failure in early career work is not using AI. It is submitting AI output the person could not defend. A supervisor asks why the analysis used that method, and there is no answer, because there was no decision. Whatever you hand over, you own. That standard applies from your first week."},
+    {t:"box",k:"try",h:"Six questions before you use any AI tool",v:["Does my institution approve it? What data does it collect and where does it go? Does it train on my inputs? Am I about to enter anyone's information but my own? Would I be able to defend this output if questioned? Could a classmate without a subscription do this assignment?","If the last one is no, that is worth saying out loud in class."]},
+    {t:"h",v:"The habit worth keeping"},
+    {t:"p",v:"You will not remember most of the vocabulary in this course. Keep one thing: these systems are confident in exactly the same way whether they are right or wrong, so confidence tells you nothing and checking tells you everything. That habit will outlast every specific tool you have used this year."}
+  ],
+  quiz:[
+    {q:"Which is safe to paste into a free consumer AI tool?",
+     a:["A classmate's draft you were asked to peer review","Your own outline for an assignment","An internship document marked internal","An interview transcript from your research project"],
+     c:1, why:"Your own work is yours to share. The other three involve someone else's information or a confidentiality obligation."},
+    {q:"Free consumer tiers commonly differ from institutional tiers in that:",
+     a:["They are less accurate","They may use your inputs to improve the system","They have no usage limits","They are legally prohibited on campus"],
+     c:1, why:"Training on inputs is a contract and settings matter, which is why an approved institutional tool is generally the safer route for anything sensitive."},
+    {q:"The most common early career failure with AI is:",
+     a:["Using it at all","Using it too slowly","Submitting output the person cannot defend when questioned","Using the wrong tool"],
+     c:2, why:"Ownership does not transfer to the tool. Whatever you hand over, you are expected to explain."}
+  ]
+}
+];
+
+const COURSE = {
+  name:"AI Literacy for Students",
+  tag:"For undergraduate and graduate students in any discipline",
+  lede:"What these tools are, how they fail, how to use them without hollowing out your own learning, and what your institution will actually hold you to.",
+  modules:STUDENT
+};
+const MODULES = COURSE.modules;
+
+/* ===================================================================
+   STATE
+=================================================================== */
+
+const KEY = "ai_literacy_students_v1";
+let state = { name:"", done:{}, scores:{} };
+
+/* Works on any host. Falls back to memory where storage is blocked,
+   such as a cross-origin embed with third party storage disabled. */
+const store = (function(){
+  let mem = {}, ok = false;
+  try{
+    window.localStorage.setItem("__probe","1");
+    window.localStorage.removeItem("__probe");
+    ok = true;
+  }catch(e){ ok = false; }
+  return {
+    persistent: ok,
+    get(k){ try{ return ok ? window.localStorage.getItem(k) : (k in mem ? mem[k] : null); }catch(e){ return null; } },
+    set(k,v){ try{ if(ok) window.localStorage.setItem(k,v); else mem[k]=v; }catch(e){ mem[k]=v; } },
+    del(k){ try{ if(ok) window.localStorage.removeItem(k); else delete mem[k]; }catch(e){ delete mem[k]; } }
+  };
+})();
+
+function loadState(){
+  const raw = store.get(KEY);
+  if(!raw) return;
+  try{
+    const s = JSON.parse(raw);
+    state.name = s.name || "";
+    state.done = s.done || {};
+    state.scores = s.scores || {};
+  }catch(e){ /* corrupt value, start fresh */ }
+}
+function saveState(){
+  store.set(KEY, JSON.stringify(state));
+}
+
+const doneCount = () => MODULES.filter(m=>state.done[m.id]).length;
+const allDone   = () => doneCount() === MODULES.length;
+
+/* ===================================================================
+   CHROME
+=================================================================== */
+
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove("show"),2600);
+}
+
+function paintChrome(hash){
+  const n = doneCount();
+  document.getElementById("meterText").textContent = n + " of " + MODULES.length + " done";
+  document.getElementById("meterFill").style.width = (n/MODULES.length*100)+"%";
+
+  document.getElementById("railList").innerHTML = MODULES.map((m,i)=>{
+    const cls = [state.done[m.id]?"done":"", hash==="#/"+m.id?"on":""].join(" ").trim();
+    return `<li><a class="${cls}" href="#/${m.id}">${i+1}. ${esc(m.title)}</a></li>`;
+  }).join("");
+  document.getElementById("railExtras").innerHTML = `
+    <li><a class="${(hash==="#/"||hash==="")?"on":""}" href="#/">Course outline</a></li>
+    <li><a class="${hash==="#/glossary"?"on":""}" href="#/glossary">Glossary</a></li>
+    <li><a class="${hash==="#/certificate"?"on":""}" href="#/certificate">Certificate</a></li>`;
+}
+
+/* ===================================================================
+   VIEWS
+=================================================================== */
+
+function homeView(){
+  const n = doneCount();
+  const next = MODULES.find(m=>!state.done[m.id]) || MODULES[0];
+  const cta = n===0 ? "Start module 1" : (allDone() ? "Get your certificate" : "Continue where you left off");
+  const href = allDone() ? "#/certificate" : "#/"+next.id;
+  return `
+  <div class="col">
+    <section class="hero">
+      <p class="mod-kicker">${esc(COURSE.tag)}</p>
+      <h1>AI literacy for people who are still learning</h1>
+      <p>${esc(COURSE.lede)} No coding, no mathematics, no prior experience assumed.</p>
+      <dl class="facts">
+        <div><dt>Length</dt><dd>Six modules, about fifty minutes</dd></div>
+        <div><dt>Format</dt><dd>Read a module, answer three questions</dd></div>
+        <div><dt>Pacing</dt><dd>Self-paced, progress saved automatically</dd></div>
+        <div><dt>Finishing</dt><dd>Pass every module quiz to earn a certificate</dd></div>
+      </dl>
+      <a class="btn" href="${href}">${cta}</a>
+    </section>
+
+    <section class="syllabus">
+      <h2 class="plain-h2">Course outline</h2>
+      ${MODULES.map((m,i)=>`
+        <a class="entry" href="#/${m.id}">
+          <span class="entry-n">${i+1}</span>
+          <span>
+            <span class="entry-t">${esc(m.title)}</span>
+            <span class="entry-d">${esc(m.blurb)}</span>
+          </span>
+          <span class="entry-s ${state.done[m.id]?"ok":""}">${state.done[m.id]?"Passed":m.mins}</span>
+        </a>`).join("")}
+    </section>
+
+    <section style="margin-top:44px">
+      <h2 class="plain-h2">Why this course exists</h2>
+      <p>You are being asked to follow AI rules that differ in every course, from instructors who are working it out at the same time you are, about a technology nobody sat you down and explained. This course does the explaining first, because you cannot follow a rule about a tool whose failure modes you cannot name.</p>
+      <p>It is also not a warning. The tools are genuinely useful for some things and genuinely corrosive for others, and the difference is learnable in under an hour.</p>
+    </section>
+
+    <section style="margin-top:36px">
+      <h2 class="plain-h2">Scope</h2>
+      <p>This is general guidance for university study. Where it differs from your course syllabus, your academic integrity policy, or your institution's data rules, those govern. Legal references are to United States frameworks and are noted as such.</p>
+    </section>
+  </div>`;
+}
+/* ===================================================================
+   FIGURES: inline SVG, no external assets, no photographs
+=================================================================== */
+
+const FIGS = {
+
+  nesting:{
+    vb:"0 0 460 340",
+    alt:"Five nested rectangles. Artificial intelligence contains machine learning, which contains deep learning, which contains generative AI, which contains large language models.",
+    svg:`
+      <rect x="3" y="3" width="454" height="334" rx="3" fill="var(--ink)" fill-opacity=".035" stroke="var(--rule)"/>
+      <text class="t-lab" x="17" y="26" fill="var(--ink-soft)">Artificial intelligence</text>
+      <rect x="29" y="36" width="402" height="278" rx="3" fill="var(--ink)" fill-opacity=".035" stroke="var(--rule)"/>
+      <text class="t-lab" x="43" y="59" fill="var(--ink-soft)">Machine learning</text>
+      <rect x="55" y="69" width="350" height="222" rx="3" fill="var(--ink)" fill-opacity=".035" stroke="var(--rule)"/>
+      <text class="t-lab" x="69" y="92" fill="var(--ink-soft)">Deep learning</text>
+      <rect x="81" y="102" width="298" height="166" rx="3" fill="var(--ink)" fill-opacity=".035" stroke="var(--rule)"/>
+      <text class="t-lab" x="95" y="125" fill="var(--ink-soft)">Generative AI</text>
+      <rect x="107" y="135" width="246" height="110" rx="3" fill="var(--track)" fill-opacity=".10" stroke="var(--track)" stroke-width="1.5"/>
+      <text class="t-lab" x="121" y="158">Large language model</text>
+      <text class="t-sub" x="121" y="180">ChatGPT, Claude,</text>
+      <text class="t-sub" x="121" y="199">Gemini, Copilot</text>`
+  },
+
+  tokens:{
+    vb:"0 0 460 236",
+    alt:"A partial sentence reading The student opened the, followed by an empty dashed slot. Below, three candidate next tokens with probability bars: door at 0.58, book at 0.19, window at 0.11.",
+    svg:`
+      <rect class="bx" x="6" y="22" width="46" height="34" rx="3"/>
+      <text class="t-sub" x="29" y="44" text-anchor="middle">The</text>
+      <rect class="bx" x="58" y="22" width="82" height="34" rx="3"/>
+      <text class="t-sub" x="99" y="44" text-anchor="middle">student</text>
+      <rect class="bx" x="146" y="22" width="78" height="34" rx="3"/>
+      <text class="t-sub" x="185" y="44" text-anchor="middle">opened</text>
+      <rect class="bx" x="230" y="22" width="46" height="34" rx="3"/>
+      <text class="t-sub" x="253" y="44" text-anchor="middle">the</text>
+      <rect x="282" y="22" width="74" height="34" rx="3" fill="none" stroke="var(--track)" stroke-dasharray="4 3"/>
+      <text class="t-sub" x="319" y="44" text-anchor="middle" fill="var(--track)">?</text>
+      <line x1="319" y1="60" x2="319" y2="92" stroke="var(--ink-soft)"/>
+      <polygon points="313,90 325,90 319,99" fill="var(--ink-soft)"/>
+      <text class="t-tiny" x="6" y="120">candidates for the next token</text>
+      <rect x="6" y="128" width="98" height="24" fill="none"/>
+      <text class="t-sub" x="6" y="145">door</text>
+      <rect x="110" y="129" width="162" height="22" rx="2" fill="var(--track)" fill-opacity=".55"/>
+      <text class="t-tiny" x="280" y="145">0.58</text>
+      <text class="t-sub" x="6" y="179">book</text>
+      <rect x="110" y="163" width="53" height="22" rx="2" fill="var(--ink)" fill-opacity=".14"/>
+      <text class="t-tiny" x="171" y="179">0.19</text>
+      <text class="t-sub" x="6" y="213">window</text>
+      <rect x="110" y="197" width="31" height="22" rx="2" fill="var(--ink)" fill-opacity=".14"/>
+      <text class="t-tiny" x="149" y="213">0.11</text>`
+  },
+
+  context:{
+    vb:"0 0 460 192",
+    alt:"A row of twelve message blocks. A frame marks the seven most recent as inside the context window; the five earliest sit outside it, faded.",
+    svg:`
+      <text class="t-tiny" x="6" y="28">earliest messages,</text>
+      <text class="t-tiny" x="6" y="44">no longer in view</text>
+      <text class="t-sub" x="193" y="44" fill="var(--track)">context window</text>
+      <rect x="6" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".07"/>
+      <rect x="43" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".07"/>
+      <rect x="80" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".07"/>
+      <rect x="117" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".07"/>
+      <rect x="154" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".07"/>
+      <rect x="185" y="52" width="268" height="66" rx="3" fill="none" stroke="var(--track)" stroke-width="1.5"/>
+      <rect x="191" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".2"/>
+      <rect x="228" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".2"/>
+      <rect x="265" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".2"/>
+      <rect x="302" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".2"/>
+      <rect x="339" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".2"/>
+      <rect x="376" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".2"/>
+      <rect x="413" y="64" width="34" height="42" rx="2" fill="var(--ink)" fill-opacity=".2"/>
+      <line x1="6" y1="146" x2="436" y2="146" stroke="var(--ink-soft)"/>
+      <polygon points="434,141 447,146 434,151" fill="var(--ink-soft)"/>
+      <text class="t-tiny" x="6" y="176">the window slides right as the conversation grows</text>`
+  },
+
+  confidence:{
+    vb:"0 0 460 282",
+    alt:"A line chart over six questions. The line for how certain the answer sounds stays flat and high. The line for how accurate the answer is swings between high and low.",
+    svg:`
+      <line x1="56" y1="44" x2="452" y2="44" stroke="var(--rule)"/>
+      <line x1="56" y1="122" x2="452" y2="122" stroke="var(--rule)"/>
+      <line x1="56" y1="200" x2="452" y2="200" stroke="var(--rule)"/>
+      <text class="t-tiny" x="6" y="48">high</text>
+      <text class="t-tiny" x="6" y="204">low</text>
+      <polyline points="56,57 134,138 211,67 289,161 366,91 444,114" fill="none" stroke="var(--pen)" stroke-width="2"/>
+      <polyline points="56,50 134,52 211,49 289,50 366,52 444,50" fill="none" stroke="var(--track)" stroke-width="2"/>
+      <circle cx="56" cy="57" r="3" fill="var(--pen)"/><circle cx="134" cy="138" r="3" fill="var(--pen)"/>
+      <circle cx="211" cy="67" r="3" fill="var(--pen)"/><circle cx="289" cy="161" r="3" fill="var(--pen)"/>
+      <circle cx="366" cy="91" r="3" fill="var(--pen)"/><circle cx="444" cy="114" r="3" fill="var(--pen)"/>
+      <circle cx="56" cy="50" r="3" fill="var(--track)"/><circle cx="134" cy="52" r="3" fill="var(--track)"/>
+      <circle cx="211" cy="49" r="3" fill="var(--track)"/><circle cx="289" cy="50" r="3" fill="var(--track)"/>
+      <circle cx="366" cy="52" r="3" fill="var(--track)"/><circle cx="444" cy="50" r="3" fill="var(--track)"/>
+      <text class="t-tiny" x="56" y="220">six questions asked in sequence</text>
+      <rect x="6" y="236" width="24" height="3" fill="var(--track)"/>
+      <text class="t-sub" x="38" y="241">how certain the answer sounds</text>
+      <rect x="6" y="260" width="24" height="3" fill="var(--pen)"/>
+      <text class="t-sub" x="38" y="265">how accurate it actually is</text>`
+  },
+
+  dataflow:{
+    vb:"0 0 460 292",
+    alt:"Two paths for text you type. On a free consumer tier it reaches vendor servers and may be used to train future models. On a contracted institutional tier it reaches servers under an agreement and is not used for training.",
+    svg:`
+      <text class="t-lab" x="6" y="18">Free consumer tier</text>
+      <rect class="bx" x="6" y="32" width="112" height="56" rx="3"/>
+      <text class="t-sub" x="62" y="65" text-anchor="middle">What you type</text>
+      <line x1="120" y1="60" x2="134" y2="60" stroke="var(--ink-soft)"/>
+      <polygon points="133,55 142,60 133,65" fill="var(--ink-soft)"/>
+      <rect class="bx" x="144" y="32" width="122" height="56" rx="3"/>
+      <text class="t-sub" x="205" y="65" text-anchor="middle">Vendor servers</text>
+      <line x1="268" y1="60" x2="282" y2="60" stroke="var(--ink-soft)"/>
+      <polygon points="281,55 290,60 281,65" fill="var(--ink-soft)"/>
+      <rect x="292" y="32" width="162" height="56" rx="3" fill="var(--pen)" fill-opacity=".07" stroke="var(--pen)"/>
+      <text class="t-sub" x="373" y="56" text-anchor="middle">May be used to</text>
+      <text class="t-sub" x="373" y="75" text-anchor="middle">train future models</text>
+      <line x1="6" y1="112" x2="454" y2="112" stroke="var(--rule)"/>
+      <text class="t-lab" x="6" y="140">Contracted institutional tier</text>
+      <rect class="bx" x="6" y="154" width="112" height="70" rx="3"/>
+      <text class="t-sub" x="62" y="194" text-anchor="middle">What you type</text>
+      <line x1="120" y1="189" x2="134" y2="189" stroke="var(--ink-soft)"/>
+      <polygon points="133,184 142,189 133,194" fill="var(--ink-soft)"/>
+      <rect x="144" y="154" width="122" height="70" rx="3" fill="var(--sage)" fill-opacity=".08" stroke="var(--sage)"/>
+      <text class="t-sub" x="205" y="184" text-anchor="middle">Vendor servers</text>
+      <text class="t-sub" x="205" y="203" text-anchor="middle">under a contract</text>
+      <line x1="268" y1="189" x2="282" y2="189" stroke="var(--ink-soft)"/>
+      <polygon points="281,184 290,189 281,194" fill="var(--ink-soft)"/>
+      <rect x="292" y="154" width="162" height="70" rx="3" fill="var(--sage)" fill-opacity=".08" stroke="var(--sage)"/>
+      <text class="t-sub" x="373" y="176" text-anchor="middle">Not used for</text>
+      <text class="t-sub" x="373" y="195" text-anchor="middle">training, retention</text>
+      <text class="t-sub" x="373" y="214" text-anchor="middle">limited by terms</text>
+      <text class="t-tiny" x="6" y="256">Which path applies is a contract term and a setting,</text>
+      <text class="t-tiny" x="6" y="274">not a property of the technology. Check both.</text>`
+  }
+};
+
+function figHTML(key, cap){
+  const f = FIGS[key];
+  if(!f) return "";
+  return `<figure class="fig">
+    <svg viewBox="${f.vb}" role="img" aria-label="${esc(f.alt)}" xmlns="http://www.w3.org/2000/svg">${f.svg}</svg>
+    ${cap ? `<figcaption>${esc(cap)}</figcaption>` : ""}
+  </figure>`;
+}
+
+function blockHTML(b){
+  if(b.t==="fig") return figHTML(b.f, b.cap);
+  if(b.t==="p") return `<p>${esc(b.v)}</p>`;
+  if(b.t==="h") return `<h3>${esc(b.v)}</h3>`;
+  if(b.t==="list") return `<ul>${b.v.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+  if(b.t==="terms") return `<dl class="terms">${b.v.map(([t,d])=>`<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("")}</dl>`;
+  if(b.t==="box") return `<div class="box ${b.k==="warn"?"warn":"try"}"><h4>${esc(b.h)}</h4>${b.v.map(p=>`<p>${esc(p)}</p>`).join("")}</div>`;
+  return "";
+}
+
+function moduleView(mod){
+  const i = MODULES.indexOf(mod);
+  return `
+  <div class="col">
+    <a class="crumb" href="#/">Back to course outline</a>
+    <div class="mod-head">
+      <p class="mod-kicker">Module ${i+1} of ${MODULES.length}, ${mod.mins}</p>
+      <h1>${esc(mod.title)}</h1>
+      <p>${esc(mod.blurb)}</p>
+    </div>
+    ${mod.body.map(blockHTML).join("")}
+    <section class="quiz" id="quiz">
+      <h3>Check yourself</h3>
+      <p class="lead-in">Three questions. Two correct marks the module passed. Retake as often as you like.</p>
+      <div id="qs">${mod.quiz.map((q,qi)=>`
+        <div class="q" data-q="${qi}">
+          <p class="stem">${qi+1}. ${esc(q.q)}</p>
+          ${q.a.map((o,oi)=>`<button class="opt" data-q="${qi}" data-o="${oi}">${esc(o)}</button>`).join("")}
+          <p class="why" hidden></p>
+        </div>`).join("")}
+      </div>
+      <div class="result" id="result" hidden></div>
+    </section>
+  </div>`;
+}
+
+function wireQuiz(mod){
+  const answers = {};
+  const total = mod.quiz.length;
+
+  document.getElementById("qs").addEventListener("click", e=>{
+    const btn = e.target.closest(".opt");
+    if(!btn || btn.disabled) return;
+    const qi = +btn.dataset.q, oi = +btn.dataset.o, q = mod.quiz[qi];
+    const wrap = document.querySelector(`.q[data-q="${qi}"]`);
+    wrap.querySelectorAll(".opt").forEach(b=>{
+      b.disabled = true;
+      if(+b.dataset.o === q.c) b.classList.add("right");
+    });
+    if(oi !== q.c) btn.classList.add("wrong");
+    const why = wrap.querySelector(".why");
+    why.textContent = q.why; why.hidden = false;
+    answers[qi] = (oi === q.c);
+    if(Object.keys(answers).length === total) finish();
+  });
+
+  function finish(){
+    const score = Object.values(answers).filter(Boolean).length;
+    const passed = score >= 2;
+    state.scores[mod.id] = score;
+    if(passed) state.done[mod.id] = true;
+    saveState();
+
+    const i = MODULES.indexOf(mod);
+    const next = MODULES[i+1];
+    const complete = allDone();
+    const el = document.getElementById("result");
+    el.hidden = false;
+    el.innerHTML = `
+      <p class="score">You answered ${score} of ${total} correctly.</p>
+      <p>${passed
+        ? (complete ? "That was the last module. Your certificate is ready."
+                    : "Module passed and saved. Read the explanations above before moving on.")
+        : "One more correct answer passes this module. Reread the relevant section, then retake it."}</p>
+      <div class="row">
+        ${passed && next ? `<a class="btn" href="#/${next.id}">Next: ${esc(next.title)}</a>`:""}
+        ${passed && complete ? `<a class="btn" href="#/certificate">Open my certificate</a>`:""}
+        <button class="btn ghost" id="retake">Retake this quiz</button>
+      </div>`;
+    document.getElementById("retake").onclick = ()=>{
+      render(); const q = document.getElementById("quiz");
+      if(q) window.scrollTo({top:q.offsetTop-70});
+    };
+    paintChrome(location.hash);
+    if(passed) toast(complete ? "Course complete" : "Module passed");
+  }
+}
+
+function glossaryView(){
+  const items = [];
+  MODULES.forEach((m,i)=>{
+    m.body.filter(b=>b.t==="terms").forEach(b=>{
+      b.v.forEach(([t,d])=>items.push({t,d,src:"Module "+(i+1)}));
+    });
+  });
+  items.sort((a,b)=>a.t.localeCompare(b.t));
+  return `
+  <div class="col">
+    <a class="crumb" href="#/">Back to course outline</a>
+    <div class="mod-head">
+      <p class="mod-kicker">Reference</p>
+      <h1>Glossary</h1>
+      <p>Every term defined in this course, in one place. Reasonable to print and keep next to your desk during a writing week.</p>
+    </div>
+    <dl class="gloss">
+      ${items.map(x=>`<div><dt>${esc(x.t)}</dt><dd>${esc(x.d)}<br><span class="src">${x.src}</span></dd></div>`).join("")}
+    </dl>
+  </div>`;
+}
+
+function certificateView(){
+  if(!allDone()){
+    const left = MODULES.filter(m=>!state.done[m.id]);
+    return `
+    <div class="col">
+      <a class="crumb" href="#/">Back to course outline</a>
+      <div class="mod-head">
+        <p class="mod-kicker">Reference</p>
+        <h1>Certificate</h1>
+        <p>Issued once every module quiz has been passed.</p>
+      </div>
+      <div class="locked">
+        <h4>Still to go</h4>
+        <p>${left.length} of ${MODULES.length} modules remain. Passing means two of three correct on each quiz.</p>
+      </div>
+      <ul>${left.map(m=>`<li><a href="#/${m.id}">${esc(m.title)}</a></li>`).join("")}</ul>
+    </div>`;
+  }
+  const today = new Date().toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"});
+  return `
+  <div class="col">
+    <a class="crumb noprint" href="#/">Back to course outline</a>
+    <div class="mod-head noprint">
+      <p class="mod-kicker">Reference</p>
+      <h1>Your certificate</h1>
+      <p>Type your name as you want it to appear, then print or save as PDF. Some institutions accept this toward a co-curricular record or a digital literacy requirement. Check before submitting it.</p>
+    </div>
+    <div class="cert-form noprint">
+      <label class="fl" for="nm">Name on certificate</label>
+      <input type="text" id="nm" value="${esc(state.name)}" placeholder="Your name" autocomplete="name">
+    </div>
+    <div class="cert">
+      <p class="cert-k">Certificate of completion</p>
+      <p class="who" id="certName">${esc(state.name || "Your name")}</p>
+      <p class="what">has completed ${esc(COURSE.name)}, a six module introduction to artificial intelligence, its failure modes, academic integrity, and responsible use in university study.</p>
+      <p class="stamp">Completed ${esc(today)}</p>
+      <ol>${MODULES.map((m,i)=>`<li>${i+1}. ${esc(m.title)}</li>`).join("")}</ol>
+    </div>
+    <div class="row noprint">
+      <button class="btn" id="printBtn">Print or save as PDF</button>
+      <a class="btn ghost" href="#/glossary">Review the glossary</a>
+    </div>
+  </div>`;
+}
+
+/* ===================================================================
+   ROUTER
+=================================================================== */
+
+function render(){
+  const hash = location.hash || "#/";
+  const sub = hash.replace(/^#\//,"").split("/").filter(Boolean)[0] || "";
+  const view = document.getElementById("view");
+  const mod = MODULES.find(m=>m.id===sub);
+
+  if(mod){ view.innerHTML = moduleView(mod); wireQuiz(mod); }
+  else if(sub === "glossary"){ view.innerHTML = glossaryView(); }
+  else if(sub === "certificate"){
+    view.innerHTML = certificateView();
+    const nm = document.getElementById("nm");
+    if(nm){
+      nm.addEventListener("input", ()=>{
+        document.getElementById("certName").textContent = nm.value || "Your name";
+      });
+      nm.addEventListener("change", ()=>{ state.name = nm.value.trim(); saveState(); });
+      document.getElementById("printBtn").onclick = ()=>{
+        state.name = nm.value.trim(); saveState(); window.print();
+      };
+    }
+  }
+  else { view.innerHTML = homeView(); }
+
+  paintChrome(hash);
+}
+
+window.addEventListener("hashchange", ()=>{ render(); window.scrollTo(0,0); });
+
+document.getElementById("resetBtn").onclick = ()=>{
+  state = { name:"", done:{}, scores:{} };
+  store.del(KEY);
+  render(); toast("Progress cleared");
+};
+
+(function(){
+  loadState();
+  render();
+  if(!store.persistent){
+    toast("Progress will not be saved in this browser context");
+  }
+})();
+</script>
+</body>
+</html>
